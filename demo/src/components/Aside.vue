@@ -1,15 +1,15 @@
 <template>
   <div>
-    <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
-      <h5>后台管理系统</h5>
+    <el-menu class="el-menu-vertical-demo"   background-color="#545c64" active-text-color='#ffd04b' @open="handleOpen" @close="handleClose" :collapse="isCollapse" router>
+      <h5></h5>
       <!-- 项目业主 -->
       <el-submenu index="1">
         <template slot="title">
-          <i class="el-icon-location"></i>
+          <i class="el-icon-user"></i>
           <span slot="title">项目业主</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="1-1">项目申报</el-menu-item>
+          <el-menu-item index="/projectapplication" path=''>项目申报</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <!-- 财评中心 -->
@@ -44,7 +44,7 @@
       <!-- 系统管理 -->
       <el-submenu index="4">
         <template slot="title">
-          <i class="el-icon-location"></i>
+          <i class="el-icon-setting"></i>
           <span>系统管理</span>
         </template>
         <el-menu-item-group>
@@ -234,22 +234,24 @@ export default {
     handleClose(key, keyPath) {
       console.log(key, keyPath)
     },
-    computed: {
-      noChildren() {
-        return this.menu.filter((item) => {
-          !item.children
-        })
-      },
-      haveChildren() {
-        return this.menu.filter((item) => item.children)
-      },
-    },
+    // computed: {
+    //   noChildren() {
+    //     return this.menu.filter((item) => {
+    //       !item.children
+    //     })
+    //   },
+    //   haveChildren() {
+    //     return this.menu.filter((item) => item.children)
+    //   },
+    // },
   },
 }
 </script>
 <style lang="less" scoped>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
+  height: 100vh;
   min-height: 400px;
+ 
 }
 </style>

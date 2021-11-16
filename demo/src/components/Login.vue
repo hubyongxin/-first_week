@@ -1,17 +1,35 @@
 <template>
   <div class="login_container">
-    <span>财评系统</span>
+    <div class="logo_img">
+      <img src="../assets/logo.png" alt="" style="width: 194px; height: 60px" />
+    </div>
+
     <div class="login_box">
-      <div class="top">请登录</div>
+      <div class="top">欢迎登录</div>
       <!-- 登录区域 -->
-      <el-form class="login_form" ref="loginFormRef" :model="loginForm" :rules="loginFormRules" label-width="0px">
+      <el-form
+        class="login_form"
+        ref="loginFormRef"
+        :model="loginForm"
+        :rules="loginFormRules"
+        label-width="0px"
+      >
         <!-- 用户名 -->
         <el-form-item prop="username">
-          <el-input v-model="loginForm.username" prefix-icon="el-icon-user" placeholder="请输入用户名"></el-input>
+          <el-input
+            v-model="loginForm.username"
+            prefix-icon="el-icon-user"
+            placeholder="财政评审平台用户名"
+          ></el-input>
         </el-form-item>
         <!-- 密码 -->
         <el-form-item prop="password">
-          <el-input v-model="loginForm.password" prefix-icon="el-icon-lock" type="password" placeholder="请输入密码"></el-input>
+          <el-input
+            v-model="loginForm.password"
+            prefix-icon="el-icon-lock"
+            type="password"
+            placeholder="财政评审平台用户密码"
+          ></el-input>
         </el-form-item>
         <!-- 按钮区域 -->
         <el-form-item class="btns">
@@ -24,80 +42,83 @@
 </template>
 
 <script>
-import axios from 'axios'
+import request from "../utlis/request";
+import qs from "qs";
 
 export default {
   data() {
     return {
       //登录表单数据绑定
       loginForm: {
-        username: '',
-        password: '',
-        msg: '',
+        username: "",
+        password: "",
+        msg: "",
       },
       loginFormRules: {
         //验证用户名
         username: [
-          { required: true, message: '请输入登录账号', trigger: 'blur' },
-          { min: 3, max: 10, message: '长度在3到10个字符', trigger: 'blur' },
+          { required: true, message: "财政评审平台用户名", trigger: "blur" },
+          { min: 3, max: 11, message: "长度在3到11个字符", trigger: "blur" },
         ],
         //验证密码
         password: [
-          { required: true, message: '请输入登录密码', trigger: 'blur' },
-          { min: 6, max: 15, message: '长度在6到15个字符', trigger: 'blur' },
+          { required: true, message: "财政评审平台用户密码", trigger: "blur" },
+          { min: 3, max: 15, message: "长度在3到15个字符", trigger: "blur" },
         ],
       },
-    }
+    };
   },
   methods: {
     //点击重置，重置表单
     resetLoginForm() {
-      this.$refs.loginFormRef.resetFields()
+      this.$refs.loginFormRef.resetFields();
     },
-    //登录
-    login() {
-      let username = this.loginForm.username
-      let password = this.loginForm.password
-      axios
-        .post('/api/login', { username, password })
-        .then((result) => {
-          console.log(result.data)
-          this.msg = result.data.ms
 
-          if (result.data.status == 200) {
-            this.$router.push('/home')
-            this.$message({
-              message: '登录成功',
-              type: 'success',
-            })
-          } else {
-            this.$message.error('用户名或密码错误')
-          }
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+    //登录
+    async login() {
+      try {
+        let params = {
+          username: this.loginForm.username,
+          pwd: this.loginForm.password,
+        };
+        const res = await request.post("/web/login", qs.stringify(params));
+        this.msg = res.data.msg;
+        if (res.data.code == "v") {
+          this.$router.push("/main");
+          this.$message({
+            message: this.msg,
+            type: "success",
+          });
+        } else {
+          this.$message.error("用户名或密码错误");
+        }
+      } catch (error) {
+        console.log(error, "系统错误!!!");
+        this.$message.error("系统错误，请稍后重试");
+      }
     },
   },
-}
+};
 </script>
 
 <style lang="less" scoped>
 .login_container {
-  background-color: rgb(50, 135, 205);
+  width: 100%;
   height: 100vh;
-  span {
-    text-align: center;
-    display: block;
-    font-size: 28px;
-    padding-top: 150px;
-  }
+  background: url("../assets/bg.2679f0d2.jpg") no-repeat #409eff;
+  display: flex;
+  justify-content: center;
+}
+
+.logo_img {
+  position: absolute;
+  top: 230px;
 }
 
 .login_box {
   width: 450px;
   height: 300px;
-  background-color: blanchedalmond;
+  background-color: white;
   border-radius: 3px;
   position: absolute;
   left: 50%;
@@ -107,7 +128,7 @@ export default {
 .top {
   border-radius: 3px;
   height: 50px;
-  background: red;
+  background: #999;
   text-align: center;
   line-height: 50px;
 }
