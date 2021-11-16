@@ -1,27 +1,61 @@
 <template>
-  <div class="box_parent">
-    <div class="left_btn">
-      <i class="el-icon-s-fold"></i>
+  <header>
+    <div class="left_content">
+      <el-button plain icon="el-icon-menu" size="mini" @click="changeMenu"></el-button>
+      <h3>首页</h3>
     </div>
-    <el-page-header @back="goBack" content="详情页面"> </el-page-header>
-  </div>
+    <div class="right_content">
+      <el-dropdown>
+        <span class="el-dropdown-link">
+          <img :src="img" class="user" />
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>黄金糕</el-dropdown-item>
+          <el-dropdown-item>狮子头</el-dropdown-item>
+          <el-dropdown-item>螺蛳粉</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
+  </header>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      img: require('../assets/logo.png'),
+    }
+  },
   methods: {
     goBack() {
-      this.$router.go(-1);
+      this.$router.go(-1)
+    },
+    changeMenu() {
+      this.$store.commit('collapseMenu')
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>
-.box_parent {
+header {
   display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: space-between;
 }
-.el-page-header {
-  line-height: 60px;
+.left_content {
+  display: flex;
+  align-items: center;
+  .el-button {
+    margin-right: 20px;
+  }
+}
+.right_content {
+  .user {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
 }
 </style>

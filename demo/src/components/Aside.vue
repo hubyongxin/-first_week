@@ -1,7 +1,6 @@
 <template>
   <div>
-    <el-menu class="el-menu-vertical-demo"   background-color="#545c64" active-text-color='#ffd04b' @open="handleOpen" @close="handleClose" :collapse="isCollapse" router>
-      <h5></h5>
+    <el-menu class="el-menu-vertical-demo" background-color="#545c64" text-color="#ffffff" active-text-color="#ffd04b" :collapse="isCollapse" router>
       <!-- 项目业主 -->
       <el-submenu index="1">
         <template slot="title">
@@ -9,7 +8,7 @@
           <span slot="title">项目业主</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="/projectapplication" path=''>项目申报</el-menu-item>
+          <el-menu-item index="/projectapplication" path="">项目申报</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <!-- 财评中心 -->
@@ -86,164 +85,13 @@
 <script>
 export default {
   data() {
-    return {
-      isCollapse: false,
-      //菜单数据
-      menu: [
-        //1
-        {
-          lable: '项目业主',
-          icno: '',
-
-          children: [
-            {
-              path: '',
-              name: '',
-              lable: '项目申报',
-              icno: '',
-              url: '',
-            },
-          ],
-        },
-        //2
-        {
-          lable: '财评中心',
-          icno: '',
-          children: [
-            {
-              path: '',
-              name: '',
-              lable: '项目审核',
-              icno: '',
-              url: '',
-            },
-            {
-              path: '',
-              name: '',
-              lable: '评定项目',
-              icno: '',
-              url: '',
-            },
-          ],
-        },
-        //3
-        {
-          lable: '中介机构',
-          icno: '',
-          children: [
-            {
-              path: '',
-              name: '',
-              lable: '项目报名',
-              icno: '',
-              url: '',
-            },
-            {
-              path: '',
-              name: '',
-              lable: '我的报名项目',
-              icno: '',
-              url: '',
-            },
-            {
-              path: '',
-              name: '',
-              lable: '我的中标项目',
-              icno: '',
-              url: '',
-            },
-          ],
-        },
-        //4
-        {
-          lable: '系统管理',
-          icno: '',
-          children: [
-            {
-              path: '',
-              name: '',
-              lable: '部门管理',
-              icno: '',
-              url: '',
-            },
-            {
-              path: '',
-              name: '',
-              lable: '人员管理',
-              icno: '',
-              url: '',
-            },
-            {
-              path: '',
-              name: '',
-              lable: '角色管理',
-              icno: '',
-              url: '',
-            },
-            {
-              path: '',
-              name: '',
-              lable: '审核流程管理',
-              icno: '',
-              url: '',
-            },
-          ],
-        },
-        //5
-        {
-          lable: '运维管理',
-          icno: '',
-          children: [
-            {
-              path: '',
-              name: '',
-              lable: '财评中心管理',
-              icno: '',
-              url: '',
-            },
-            {
-              path: '',
-              name: '',
-              lable: '服务费规则管理',
-              icno: '',
-              url: '',
-            },
-            {
-              path: '',
-              name: '',
-              lable: '服务费设置',
-              icno: '',
-              url: '',
-            },
-            {
-              path: '',
-              name: '',
-              lable: '服务费核实',
-              icno: '',
-              url: '',
-            },
-          ],
-        },
-      ],
-    }
+    return {}
   },
-  methods: {
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath)
+  methods: {},
+  computed: {
+    isCollapse() {
+      return this.$store.state.tab.isCollapse
     },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath)
-    },
-    // computed: {
-    //   noChildren() {
-    //     return this.menu.filter((item) => {
-    //       !item.children
-    //     })
-    //   },
-    //   haveChildren() {
-    //     return this.menu.filter((item) => item.children)
-    //   },
-    // },
   },
 }
 </script>
@@ -252,6 +100,8 @@ export default {
   width: 200px;
   height: 100vh;
   min-height: 400px;
- 
+}
+.el-menu--collapse {
+  height: 100vh;
 }
 </style>
