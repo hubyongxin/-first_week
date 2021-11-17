@@ -122,6 +122,16 @@ export default {
           },
         }
       );
+      	res.data.rows.map(function (val) {
+              if (val.shbj == 0) {
+                val.shbj = '仅暂存'
+              } else if (val.shbj == 1) {
+                val.shbj = '待审核'
+              }
+               else {
+                val.shbj = '审核中'
+              }
+            })
       		res.data.rows.map(function (val) {
               if (val.isend == 0) {
                 val.isend = '未审核'
