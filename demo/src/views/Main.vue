@@ -35,8 +35,8 @@ export default {
 
 .el-header {
 
-  background-color: wheat;
-  
+  background: whitesmoke;
+
 }
 .el-main {
   padding-top: 0;

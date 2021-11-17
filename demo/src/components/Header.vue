@@ -2,17 +2,18 @@
   <header>
     <div class="left_content">
       <el-button plain icon="el-icon-menu" size="mini" @click="changeMenu"></el-button>
-      <h3>首页</h3>
+      <el-button plain icon="el-icon-arrow-left" size="mini" @click="goBack"></el-button>
     </div>
     <div class="right_content">
       <el-dropdown>
+        <span>admin</span>
         <span class="el-dropdown-link">
           <img :src="img" class="user" />
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>黄金糕</el-dropdown-item>
-          <el-dropdown-item>狮子头</el-dropdown-item>
-          <el-dropdown-item>螺蛳粉</el-dropdown-item>
+          <el-dropdown-item>进入网站</el-dropdown-item>
+          <el-dropdown-item>修改密码</el-dropdown-item>
+          <el-dropdown-item @click="backOut"> 退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -23,7 +24,7 @@
 export default {
   data() {
     return {
-      img: require('../assets/logo.png'),
+      img: require('../assets/bg.2679f0d2.jpg'),
     }
   },
   methods: {
@@ -33,6 +34,9 @@ export default {
     changeMenu() {
       this.$store.commit('collapseMenu')
     },
+    backOut(){
+      this.$router.push('/')
+    }
   },
 }
 </script>
@@ -48,10 +52,16 @@ header {
   display: flex;
   align-items: center;
   .el-button {
-    margin-right: 20px;
+    margin-right: 0;
   }
 }
 .right_content {
+  .el-dropdown{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+  }
   .user {
     width: 40px;
     height: 40px;
