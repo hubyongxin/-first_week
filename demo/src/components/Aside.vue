@@ -18,7 +18,7 @@
           <span>财评中心</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="2-1">项目审核</el-menu-item>
+          <el-menu-item index="/projectaudit">项目审核</el-menu-item>
         </el-menu-item-group>
         <el-menu-item-group>
           <el-menu-item index="2-2">评定项目</el-menu-item>
