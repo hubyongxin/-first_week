@@ -21,7 +21,7 @@
       </div>
       <!-- 信息列表区域 -->
       <div class="list">
-        <el-table :data="tableData" style="width: 100%" height="780">
+        <el-table :data="tableData" style="width: 100%" height="80%">
           <el-table-column fixed prop="name ,proguid" label="项目信息" width="204">
             <template slot-scope="scope">
               <div>
