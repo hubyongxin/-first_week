@@ -10,37 +10,19 @@
             <el-radio-button label="top">已截止报名</el-radio-button>
           </el-radio-group>
           <el-select v-model="form.region" placeholder="类别" size="small">
-            <el-option
-              :label="item.name"
-              :value="item.value"
-              v-for="item in typeList"
-              :key="item.id"
-            ></el-option>
+            <el-option :label="item.name" :value="item.value" v-for="item in typeList" :key="item.id"></el-option>
           </el-select>
-          <el-input
-            v-model="form.name"
-            placeholder="项目名称"
-            size="small"
-          ></el-input>
+          <el-input v-model="form.name" placeholder="项目名称" size="small"></el-input>
           <span>
-            <el-button type="primary" icon="el-icon-search" size="small"
-              >查询</el-button
-            >
-            <el-button type="success" size="small" @click="goAdd"
-              ><i class="el-icon-plus el-icon--left"></i>添加</el-button
-            >
+            <el-button type="primary" icon="el-icon-search" size="small">查询</el-button>
+            <el-button type="success" size="small" @click="goAdd"><i class="el-icon-plus el-icon--left"></i>添加</el-button>
           </span>
         </el-form>
       </div>
       <!-- 信息列表区域 -->
       <div class="list">
         <el-table :data="tableData" style="width: 100%" height="780">
-          <el-table-column
-            fixed
-            prop="name ,proguid"
-            label="项目信息"
-            width="204"
-          >
+          <el-table-column fixed prop="name ,proguid" label="项目信息" width="204">
             <template slot-scope="scope">
               <div>
                 <el-button type="text">{{ scope.row.name }}</el-button>
@@ -48,27 +30,16 @@
               <div>{{ scope.row.proguid }}</div>
             </template>
           </el-table-column>
-          <el-table-column prop="amount" label="送审金额（万元）" width="135">
-          </el-table-column>
-          <el-table-column prop="typename" label="送审类别" width="162">
-          </el-table-column>
-          <el-table-column prop="construct_dwname" label="建设单位" width="162">
-          </el-table-column>
-          <el-table-column
-            prop="pro_lxr ,pro_tel"
-            label="联系人信息"
-            width="162"
-          >
+          <el-table-column prop="amount" label="送审金额（万元）" width="135"> </el-table-column>
+          <el-table-column prop="typename" label="送审类别" width="162"> </el-table-column>
+          <el-table-column prop="construct_dwname" label="建设单位" width="162"> </el-table-column>
+          <el-table-column prop="pro_lxr ,pro_tel" label="联系人信息" width="162">
             <template slot-scope="scope">
               <div>{{ scope.row.pro_lxr }}</div>
               <div>{{ scope.row.pro_tel }}</div>
             </template>
           </el-table-column>
-          <el-table-column
-            prop="price_starttime , price_endtime"
-            label="报价时间范围"
-            width="244"
-          >
+          <el-table-column prop="price_starttime , price_endtime" label="报价时间范围" width="244">
             <template slot-scope="scope">
               <div>{{ scope.row.price_starttime }}</div>
               <div>{{ scope.row.price_endtime }}</div>
@@ -76,94 +47,54 @@
           </el-table-column>
           <el-table-column prop="shbj" label="审核状态" width="119">
             <template slot-scope="scope">
-   
-              <el-tag type="primary" v-if="scope.row.shbj == '审核中'">{{
-                scope.row.shbj
-              }}</el-tag>
-              <el-tag type="success" v-if="scope.row.shbj == '通过'">{{
-                scope.row.shbj
-              }}</el-tag>
-              <el-tag type="info" v-if="scope.row.shbj == '仅暂存'">{{
-                scope.row.shbj
-              }}</el-tag>
+              <el-tag type="primary" v-if="scope.row.shbj == '审核中'">{{ scope.row.shbj }}</el-tag>
+              <el-tag type="success" v-if="scope.row.shbj == '通过'">{{ scope.row.shbj }}</el-tag>
+              <el-tag type="info" v-if="scope.row.shbj == '仅暂存'">{{ scope.row.shbj }}</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="评审状态" prop="isend" width="119">
             <template slot-scope="scope">
-              <el-tag type="warning" v-if="scope.row.isend == '未评定'">{{
-                scope.row.isend
-              }}</el-tag>
-              <el-tag type="success" v-if="scope.row.isend == '已评定'">{{
-                scope.row.isend
-              }}</el-tag>
+              <el-tag type="warning" v-if="scope.row.isend == '未评定'">{{ scope.row.isend }}</el-tag>
+              <el-tag type="success" v-if="scope.row.isend == '已评定'">{{ scope.row.isend }}</el-tag>
             </template>
           </el-table-column>
 
           <el-table-column fixed="right" label="操作">
             <template slot-scope="scope">
-              <el-button
-                @click.native.prevent="deleteRow(scope.$index, tableData)"
-                type="text"
-                size="small"
-                >详情</el-button
-              >
-              <el-button
-                @click.native.prevent="deleteRow(scope.$index, tableData)"
-                type="text"
-                size="small"
-                >编辑</el-button
-              >
-              <el-button
-                type="text"
-                size="small"
-                @click="removeProjectById(scope.row.proguid)"
-                >删除</el-button
-              >
-              <el-button
-                @click.native.prevent="deleteRow(scope.$index, tableData)"
-                type="text"
-                size="small"
-                v-if="scope.row.isend == '待审核'"
-                >查看结果</el-button
-              >
+              <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">详情</el-button>
+              <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">编辑</el-button>
+              <el-button type="text" size="small" @click="removeProjectById(scope.row.proguid)">删除</el-button>
+              <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small" v-if="scope.row.isend == '待审核'">查看结果</el-button>
             </template>
           </el-table-column>
         </el-table>
       </div>
       <!-- 分页区域 -->
       <div class="page">
-        <el-pagination
-          background
-          layout=" total,prev, pager, next"
-          :total="this.listTotal"
-          :page-size="this.pageSize"
-          :current-page="this.currentPage"
-          @current-change="handleCurrentChange"
-        >
-        </el-pagination>
+        <el-pagination background layout=" total,prev, pager, next" :total="this.listTotal" :page-size="this.pageSize" :current-page="this.currentPage" @current-change="handleCurrentChange"> </el-pagination>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import request from "../utlis/request";
+import request from '../utlis/request'
 import qs from 'qs'
 export default {
   data() {
     return {
       form: {
-        labelPosition: "right",
-        region: "",
-        name: "",
+        labelPosition: 'right',
+        region: '',
+        name: '',
       },
       typeList: [
-        { id: "1", name: "概算", value: "概算" },
-        { id: "2", name: "预算", value: "预算" },
-        { id: "3", name: "标底", value: "标底" },
-        { id: "4", name: "结算", value: "结算" },
-        { id: "5", name: "变更", value: "变更" },
-        { id: "6", name: "其他", value: "其他" },
+        { id: '1', name: '概算', value: '概算' },
+        { id: '2', name: '预算', value: '预算' },
+        { id: '3', name: '标底', value: '标底' },
+        { id: '4', name: '结算', value: '结算' },
+        { id: '5', name: '变更', value: '变更' },
+        { id: '6', name: '其他', value: '其他' },
       ],
       //列表数据
       tableData: [],
@@ -173,96 +104,89 @@ export default {
       pageSize: 20,
       //显示当前页
       currentPage: 1,
-    };
+    }
   },
   methods: {
     //页数变化
     handleCurrentChange(currentPage) {
-      this.currentPage = currentPage;
-      this.getList();
+      this.currentPage = currentPage
+      this.getList()
     },
 
     //获取列表
     async getList() {
-      const res = await request.get(
-        "/demandresponse/demander/demand/list.json",
-        {
-          params: {
-            pageindex: this.currentPage,
-            sortname: "addtime",
-            sortorder: "desc",
-            pagesize: 20,
-            business: "financial-review",
-          },
-        }
-      );
+      const res = await request.get('/demandresponse/demander/demand/list.json', {
+        params: {
+          pageindex: this.currentPage,
+          sortname: 'addtime',
+          sortorder: 'desc',
+          pagesize: 20,
+          business: 'financial-review',
+        },
+      })
       res.data.rows.map(function (val) {
         if (val.shbj == 0) {
-          val.shbj = "仅暂存";
+          val.shbj = '仅暂存'
         } else if (val.shbj == 1) {
-          val.shbj = "待审核";
+          val.shbj = '待审核'
         } else if (val.shbj == 2) {
-          val.shbj = "退回";
+          val.shbj = '退回'
         } else if (val.shbj == 3) {
-          val.shbj = "审核中";
+          val.shbj = '审核中'
         } else if (val.shbj == 9) {
-          val.shbj = "通过";
+          val.shbj = '通过'
         }
-      });
+      })
       res.data.rows.map(function (val) {
         if (val.isend == 1) {
-          val.isend = "已评定";
+          val.isend = '已评定'
         } else if (val.isend == 0) {
-          val.isend = "未评定";
+          val.isend = '未评定'
         }
-      });
+      })
 
-      console.log(res);
-      this.tableData = res.data.rows;
-      this.listTotal = res.data.total;
+      console.log(res)
+      this.tableData = res.data.rows
+      this.listTotal = res.data.total
     },
     async removeProjectById(proguid) {
       try {
         //弹框询问是否删除
-        const confirmResult = await this.$confirm(
-          "删除后无法撤销，确认删除操作？","提示",
-          {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning",
-          }
-        ).catch((err) => {
-          return err;
-        });
+        const confirmResult = await this.$confirm('删除后无法撤销，确认删除操作？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }).catch((err) => {
+          return err
+        })
         //用户确认删除，则返回值为字符串confirm
         //用户取消删除，则返回值为字符串cancel
         // console.log(confirmResult);
-        if (confirmResult === "cancel") {
-          return this.$message.info("取消删除");
-        } 
-        let params = {proguid}
-        const res = await request.post("/demandresponse/demander/demand/del.json",qs.stringify(params));
-        if (res.data.code == "v") {
-          this.getList();
-          return this.$message.success("删除成功！")
-        }else{
-          this.$message.error("删除失败！");
+        if (confirmResult === 'cancel') {
+          return this.$message.info('取消删除')
+        }
+        let params = { proguid }
+        const res = await request.post('/demandresponse/demander/demand/del.json', qs.stringify(params))
+        if (res.data.code == 'v') {
+          this.getList()
+          return this.$message.success('删除成功！')
+        } else {
+          this.$message.error('删除失败！')
         }
       } catch (error) {
-        console.log(error, "系统错误");
+        console.log(error, '系统错误')
       }
-    
     },
 
     //添加页面
     goAdd() {
-      this.$router.push("/projectadd");
+      this.$router.push('/projectadd')
     },
   },
   created() {
-    this.getList();
+    this.getList()
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

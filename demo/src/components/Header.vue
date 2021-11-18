@@ -34,9 +34,9 @@ export default {
     changeMenu() {
       this.$store.commit('collapseMenu')
     },
-    backOut(){
+    backOut() {
       this.$router.push('/')
-    }
+    },
   },
 }
 </script>
@@ -56,11 +56,10 @@ header {
   }
 }
 .right_content {
-  .el-dropdown{
+  .el-dropdown {
     display: flex;
     justify-content: center;
     align-items: center;
-    
   }
   .user {
     width: 40px;

@@ -21,7 +21,7 @@
           <el-menu-item index="/projectaudit">项目审核</el-menu-item>
         </el-menu-item-group>
         <el-menu-item-group>
-          <el-menu-item index="2-2">评定项目</el-menu-item>
+          <el-menu-item index="/projectlayout">评定项目</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <!-- 中介机构 -->
