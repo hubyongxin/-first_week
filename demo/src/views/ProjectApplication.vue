@@ -1,27 +1,28 @@
 <template>
+<div>
   <div id="view-content">
     <div>
       <!-- 搜索框区域 -->
       <div class="my-search">
         <el-form>
-          <el-radio-group v-model="form.labelPosition" size="small">
-            <el-radio-button label="left">全部</el-radio-button>
-            <el-radio-button label="right">未截止报名</el-radio-button>
-            <el-radio-button label="top">已截止报名</el-radio-button>
+          <el-radio-group v-model="form.btnval" size="small">
+            <el-radio-button label="" >全部</el-radio-button>
+            <el-radio-button label="0"  >未截止报名</el-radio-button>
+            <el-radio-button label="1" >已截止报名</el-radio-button>
           </el-radio-group>
-          <el-select v-model="form.region" placeholder="类别" size="small">
-            <el-option :label="item.name" :value="item.value" v-for="item in typeList" :key="item.id"></el-option>
+          <el-select v-model="form.typeval" placeholder="类别" size="small">
+            <el-option :label="item.name" :value="item.value" v-for="item in typeList" :key="item.value"></el-option>
           </el-select>
           <el-input v-model="form.name" placeholder="项目名称" size="small"></el-input>
           <span>
-            <el-button type="primary" icon="el-icon-search" size="small">查询</el-button>
+            <el-button type="primary" icon="el-icon-search" size="small" @click="select">查询</el-button>
             <el-button type="success" size="small" @click="goAdd"><i class="el-icon-plus el-icon--left"></i>添加</el-button>
           </span>
         </el-form>
       </div>
       <!-- 信息列表区域 -->
       <div class="list">
-        <el-table :data="tableData" style="width: 100%" height="80%">
+        <el-table :data="tableData" style="width: 100%" height="800">
           <el-table-column fixed prop="name ,proguid" label="项目信息" width="204">
             <template slot-scope="scope">
               <div>
@@ -61,8 +62,8 @@
 
           <el-table-column fixed="right" label="操作">
             <template slot-scope="scope">
-              <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">详情</el-button>
-              <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">编辑</el-button>
+              <el-button type="text" size="small" @click="getDetail(scope.row.proguid)">详情</el-button>
+              <el-button type="text" size="small"  @click="showEditDialog(scope.row.proguid)">编辑</el-button>
               <el-button type="text" size="small" @click="removeProjectById(scope.row.proguid)">删除</el-button>
               <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small" v-if="scope.row.isend == '待审核'">查看结果</el-button>
             </template>
@@ -75,6 +76,123 @@
       </div>
     </div>
   </div>
+
+  <!--  编辑区域 -->
+  <el-dialog title="项目信息编辑" :visible.sync="editDialogVisible"  @close="editDialogClosed">
+      <el-form :model="ruleForm" ref="editFormRef">
+
+      <!-- 活动名称 -->
+      <div>
+        <el-form-item label="项目名称" prop="name" label-width="150px">
+          <el-input v-model="ruleForm.name" size="small"></el-input>
+        </el-form-item>
+      </div>
+    
+      <div>
+        <el-form-item label="送审类别" prop="type" label-width="150px">
+          <el-radio-group v-model="ruleForm.type">
+            <el-radio label="01">概算</el-radio>
+            <el-radio label="02">预算</el-radio>
+            <el-radio label="03">标底</el-radio>
+            <el-radio label="04">结算</el-radio>
+            <el-radio label="05">决算</el-radio>
+            <el-radio label="06">变更</el-radio>
+            <el-radio label="07">其他</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </div>
+      <el-row>
+        <el-col :span="12">
+          <div>
+            <el-form-item label="送审金额" prop="money" label-width="150px"> <el-input-number v-model="ruleForm.amount" :min="0" size="small"> </el-input-number> <span>（万元）</span> </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div>
+            <el-form-item label="评审年度" prop="year" label-width="150px">
+              <el-date-picker v-model="ruleForm.review_year" type="year" placeholder="选择年" size="small" value-format="yyyy"></el-date-picker>
+            </el-form-item>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <div>
+            <el-form-item label="所属区域" prop="area" label-width="150px">
+                <el-cascader  :options="this.cityList" v-model="ruleForm.cityname" :props="{value:'citycode',label: 'cityname'}"></el-cascader>
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div>
+            <el-form-item label="审核单位" prop="check" label-width="150px">
+              <el-input v-model="ruleForm.check" size="small"> </el-input>
+            </el-form-item>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <div>
+            <el-form-item label="建设单位" prop="construction" label-width="150px">
+              <el-input v-model="ruleForm.construct_dwname" size="small"> </el-input>
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div>
+            <el-form-item label="建设单位地址" prop="constructionArea" label-width="150px">
+              <el-input v-model="ruleForm.construct_address" size="small"> </el-input>
+            </el-form-item>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row>
+ 
+        <el-col :span="12">
+          <div>
+            <el-form-item label="项目联系人" prop="person" label-width="150px">
+              <el-input v-model="ruleForm.pro_lxr" size="small"> </el-input>
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div>
+            <el-form-item label="联系人手机号码" prop="personTel" label-width="150px">
+              <el-input v-model="ruleForm.pro_tel" size="small"> </el-input>
+            </el-form-item>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <div>
+            <el-form-item label="报价开始时间" prop="start" label-width="150px">
+              <el-date-picker v-model="ruleForm.price_starttime" type="datetime" placeholder="选择日期时间" size="small" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div>
+            <el-form-item label="报价结束时间" prop="end" label-width="150px">
+              <el-date-picker v-model="ruleForm.price_endtime" type="datetime" placeholder="选择日期时间" size="small" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+            </el-form-item>
+          </div>
+        </el-col>
+      </el-row>
+      <div>
+        <el-form-item label="报价需提交资料说明" prop="desc" class="textarea" label-width="150px">
+          <el-input type="textarea" v-model="ruleForm.reason" size="small"></el-input>
+        </el-form-item>
+      </div>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="editDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="editProject">确 定</el-button>
+      </div>
+    </el-dialog>
+
+  </div>
 </template>
 
 <script>
@@ -84,17 +202,18 @@ export default {
   data() {
     return {
       form: {
-        labelPosition: 'right',
-        region: '',
+        btnval: '',
         name: '',
+        typeval:''
       },
       typeList: [
-        { id: '1', name: '概算', value: '概算' },
-        { id: '2', name: '预算', value: '预算' },
-        { id: '3', name: '标底', value: '标底' },
-        { id: '4', name: '结算', value: '结算' },
-        { id: '5', name: '变更', value: '变更' },
-        { id: '6', name: '其他', value: '其他' },
+        {name: '概算', value: '01' },
+        {name: '预算', value: '02' },
+        {name: '标底', value: '03' },
+        {name: '结算', value: '04' },
+        {name: '决算', value: '05'},
+        {name: '变更', value: '06'},
+        {name: '其他', value: '07' },
       ],
       //列表数据
       tableData: [],
@@ -104,6 +223,13 @@ export default {
       pageSize: 20,
       //显示当前页
       currentPage: 1,
+      //项目详情
+      projectDetail:[],
+      cityList:[],
+      
+      editDialogVisible: false,
+      ruleForm: {
+      },
     }
   },
   methods: {
@@ -177,11 +303,100 @@ export default {
         console.log(error, '系统错误')
       }
     },
+    //详情
+  async getDetail(proguid){
+    try {
+        this.$router.push({path:`/projectdetail/${proguid}`})
+    } catch (error) {
+      console.log(error,'系统接口异常，请稍后重试');
+    }
+  },
+    //查询
+    async select(){
+      try {
+    
+        const res = await request.get('/demandresponse/demander/demand/list.json',{
+          params:{
+            title:this.form.name,
+            business: 'financial-review',
+            pageindex: this.currentPage,
+            sortname: 'addtime',
+            sortorder: 'desc',
+            pagesize: 20,
+            isend:this.form.btnval,
+            type:this.form.typeval,
+            startime:'',
+            endtime:''
+        }
+        })
+        res.data.rows.map(function (val) {
+        if (val.shbj == 0) {
+          val.shbj = '仅暂存'
+        } else if (val.shbj == 1) {
+          val.shbj = '待审核'
+        } else if (val.shbj == 2) {
+          val.shbj = '退回'
+        } else if (val.shbj == 3) {
+          val.shbj = '审核中'
+        } else if (val.shbj == 9) {
+          val.shbj = '通过'
+        }
+      })
+
+      res.data.rows.map(function (val) {
+        if (val.isend == 1) {
+          val.isend = '已评定'
+        } else if (val.isend == 0) {
+          val.isend = '未评定'
+        }
+      })
+        console.log(res);
+        this.tableData = res.data.rows
+        this.listTotal = res.data.rows.total
+
+        
+      } catch (error) {
+        console.log(error,'系统接口异常，请稍后重试');
+      }
+    },
+
 
     //添加页面
     goAdd() {
       this.$router.push('/projectadd')
     },
+
+//编辑
+    async showEditDialog(proguid) {
+        const res = await request.get('/demandresponse/demander/demand/detail.json', {
+          params:{
+            proguid
+          }
+        })
+                this.ruleForm = res.data.tdata
+                this.editDialogVisible = true
+            },
+             editProject() {
+                this.$refs.editFormRef.validate(async valid => {
+                    let params = this.ruleForm 
+                    if (!valid) return
+                    //编辑项目信息请求
+                    const res = await request.post('/demandresponse/demander/demand/edit.json', qs.stringify(params))
+                    console.log(res);
+                    if (res.data.code != 'v') {
+                        return this.$message.error('修改失败！')
+                    }
+                    this.$message.success('修改成功！')
+                    // 隐藏对话框
+                    this.editDialogVisible = false
+                    //重新获取用表数据
+                    this.getList()
+                })
+            },
+             editDialogClosed() {
+                //对话框关闭后自动重置
+                this.$refs.editFormRef.resetFields()
+            },
   },
   created() {
     this.getList()

@@ -1,119 +1,114 @@
 <template>
-  <div>
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+  <div class="main">
+    <!-- 表单区域 -->
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
+      <el-form-item class="title"><div>项目信息</div></el-form-item>
+      <!-- 项目名称 -->
+      <div>
+        <el-form-item label="项目名称" prop="name" label-width="150px">
+          <el-input v-model="ruleForm.name" size="small"></el-input>
+        </el-form-item>
+      </div>
+      <el-form-item class="title"><div>详细信息</div></el-form-item>
+      <div>
+        <el-form-item label="送审类别" prop="type" label-width="150px">
+          <el-radio-group v-model="ruleForm.type" @change="getType">
+            <el-radio :label="item.typename" :value='item.type' v-for ="item in type" :key="item.type" ></el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </div>
       <el-row>
-        <el-col :span="24" class="big_title">
-          <div class="grid-content bg-purple-light">项目信息</div>
-        </el-col>
-        <el-col :span="4">
-          <div class="grid-content bg-purple-light">项目名称</div>
-        </el-col>
-        <el-col :span="20">
-          <div class="grid-content bg-purple">
-            <el-input v-model="ruleForm.name" size="small"></el-input>
+        <el-col :span="12">
+          <div>
+            <el-form-item label="送审金额" prop="money" label-width="150px"> <el-input-number v-model="ruleForm.money" :min="0" size="small"> </el-input-number> <span>（万元）</span> </el-form-item>
           </div>
         </el-col>
-        <el-col :span="24"><div class="grid-content bg-purple-light">详细信息</div></el-col>
-        <el-col :span="4"><div class="grid-content bg-purple-light">送审类别</div></el-col>
-        <el-col :span="20">
-          <div class="grid-content bg-purple">
-            <el-radio-group v-model="ruleForm.type">
-              <el-radio label="概算"></el-radio>
-              <el-radio label="预算"></el-radio>
-              <el-radio label="标底"></el-radio>
-              <el-radio label="结算"></el-radio>
-              <el-radio label="决算"></el-radio>
-              <el-radio label="其他"></el-radio>
-            </el-radio-group>
+        <el-col :span="12">
+          <div>
+            <el-form-item label="评审年度" prop="year" label-width="150px">
+              <el-date-picker v-model="ruleForm.year" type="year" placeholder="选择年" size="small" value-format="yyyy"></el-date-picker>
+            </el-form-item>
           </div>
         </el-col>
-        <el-col :span="4">
-          <div class="grid-content bg-purple-light">送审金额</div>
-        </el-col>
-        <el-col :span="8">
-          <div class="grid-content bg-purple">
-            <el-input-number v-model="ruleForm.money" :min="0" size="small"> </el-input-number>
-            <span>（万元）</span>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <div>
+            <el-form-item label="所属区域" prop="area" label-width="150px">
+              <el-cascader  :options="cityList" v-model="ruleForm.area" :props="{value:'citycode',label: 'cityname'}"  @change="getCityCode"></el-cascader>
+            </el-form-item>
           </div>
         </el-col>
-        <el-col :span="4">
-          <div class="grid-content bg-purple-light">评审年度</div>
-        </el-col>
-        <el-col :span="8">
-          <div class="grid-content bg-purple">
-            <el-date-picker v-model="ruleForm.year" type="year" placeholder="选择年" size="small"> </el-date-picker>
+        <el-col :span="12">
+          <div>
+            <el-form-item label="审核单位" prop="check" label-width="150px">
+             {{this.Auditlist.dwcnname}}
+            </el-form-item>
           </div>
         </el-col>
-        <el-col :span="4">
-          <div class="grid-content bg-purple-light">所属地区</div>
-        </el-col>
-        <el-col :span="8">
-          <div class="grid-content bg-purple">
-            <el-select v-model="ruleForm.area" placeholder="请选择活动区域" size="small">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
-            </el-select>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <div>
+            <el-form-item label="建设单位" prop="construction" label-width="150px">
+              <el-input v-model="ruleForm.construction" size="small"> </el-input>
+            </el-form-item>
           </div>
         </el-col>
-        <el-col :span="4">
-          <div class="grid-content bg-purple-light">审核单位</div>
-        </el-col>
-        <el-col :span="8"><div class="grid-content bg-purple"></div></el-col>
-        <el-col :span="4"><div class="grid-content bg-purple-light">建设单位</div> </el-col>
-        <el-col :span="8">
-          <div class="grid-content bg-purple">
-            <el-input v-model="ruleForm.construction" size="small"> </el-input>
+        <el-col :span="12">
+          <div>
+            <el-form-item label="建设单位地址" prop="constructionArea" label-width="150px">
+              <el-input v-model="ruleForm.constructionArea" size="small"> </el-input>
+            </el-form-item>
           </div>
         </el-col>
-        <el-col :span="4"><div class="grid-content bg-purple-light">建设单位地址</div></el-col>
-        <el-col :span="8">
-          <div class="grid-content bg-purple">
-            <el-input v-model="ruleForm.constructionArea" size="small"> </el-input>
+      </el-row>
+      <el-row>
+ 
+        <el-col :span="12">
+          <div>
+            <el-form-item label="项目联系人" prop="person" label-width="150px">
+              <el-input v-model="ruleForm.person" size="small"> </el-input>
+            </el-form-item>
           </div>
         </el-col>
-        <el-col :span="4">
-          <div class="grid-content bg-purple-light"><div>项目联系人</div></div>
-        </el-col>
-        <el-col :span="8">
-          <div class="grid-content bg-purple">
-            <el-input v-model="ruleForm.person" size="small"> </el-input>
+        <el-col :span="12">
+          <div>
+            <el-form-item label="联系人手机号码" prop="personTel" label-width="150px">
+              <el-input v-model="ruleForm.personTel" size="small"> </el-input>
+            </el-form-item>
           </div>
         </el-col>
-        <el-col :span="4">
-          <div class="grid-content bg-purple-light">联系人手机号码</div>
-        </el-col>
-        <el-col :span="8">
-          <div class="grid-content bg-purple">
-            <el-input v-model="ruleForm.personTel" size="small"> </el-input>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <div>
+            <el-form-item label="报价开始时间" prop="start" label-width="150px">
+              <el-date-picker v-model="ruleForm.start" type="datetime" placeholder="选择日期时间" size="small" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+            </el-form-item>
           </div>
         </el-col>
-        <el-col :span="4">
-          <div class="grid-content bg-purple-light">报价开始时间</div>
-        </el-col>
-        <el-col :span="8">
-          <div class="grid-content bg-purple">
-            <el-date-picker v-model="ruleForm.start" type="datetime" placeholder="选择日期时间" size="small"> </el-date-picker>
+        <el-col :span="12">
+          <div>
+            <el-form-item label="报价结束时间" prop="end" label-width="150px">
+              <el-date-picker v-model="ruleForm.end" type="datetime" placeholder="选择日期时间" size="small" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+            </el-form-item>
           </div>
         </el-col>
-        <el-col :span="4">
-          <div class="grid-content bg-purple-light">报价结束时间</div>
-        </el-col>
-        <el-col :span="8">
-          <div class="grid-content bg-purple">
-            <el-date-picker v-model="ruleForm.end" type="datetime" placeholder="选择日期时间" size="small"> </el-date-picker>
-          </div>
-        </el-col>
-        <el-col :span="4">
-          <div class="grid-content bg-purple-light">报价需提交资料说明</div>
-        </el-col>
-        <el-col :span="20">
-          <div class="grid-content bg-purple">
-            <el-input type="textarea" v-model="ruleForm.desc" size="small"> </el-input>
-          </div>
-        </el-col>
+      </el-row>
+      <div>
+        <el-form-item label="报价需提交资料说明" prop="desc" class="textarea" label-width="150px">
+          <el-input type="textarea" v-model="ruleForm.desc" size="small"></el-input>
+        </el-form-item>
+      </div>
+      <el-row>
         <el-col :span="24">
-          <div class="grid-content bg-purple">
-            <div><el-button>提交</el-button><el-button>暂存</el-button><el-button>取消</el-button></div>
+          <div>
+            <el-form-item class="btn">
+              <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+              <el-button type="warning">暂存</el-button>
+              <el-button type="info" @click="resetForm('ruleForm')">重置</el-button>
+            </el-form-item>
           </div>
         </el-col>
       </el-row>
@@ -122,15 +117,19 @@
 </template>
 
 <script>
+import request from '../utlis/request'
+import qs from 'qs'
 export default {
   data() {
     return {
       ruleForm: {
         name: '',
         type: '',
+        type2:'',
         money: '',
         year: '',
         area: '',
+        check:'',
         construction: '',
         constructionArea: '',
         person: '',
@@ -138,65 +137,172 @@ export default {
         start: '',
         end: '',
         desc: '',
+       
+       //所属区域名字
+        cityname:''
       },
-      rules: {},
+       
+      //城市列表数据
+      cityList: [],
+      type: [
+        {type: '01', typename:'概算'},
+        {type: '02', typename:'预算'},
+        {type: '03', typename:'标底'},
+        {type: '04', typename:'结算'},
+        {type: '05', typename:'决算'},
+        {type: '06', typename:'变更'},
+        {type: '07', typename:'其他'},
+        ],
+
+        //审核单位
+        Auditlist:{},
+
+      rules: {
+        name: [{ required: true, message: '请输入项目名称', trigger: 'blur' }],
+        desc: [{ required: true, message: '报价需提交资料说明', trigger: 'blur' }],
+      },
     }
   },
   methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!')
-        } else {
-          console.log('error submit!!')
-          return false
+    //添加
+    async submitForm() {
+      try {
+        let params = {
+          rowguid: '',
+          proguid: '',
+          type: this.ruleForm.type2,
+          typename: this.ruleForm.type,
+          amount: this.ruleForm.money,
+          review_year: this.ruleForm.year,
+          citycode: this.ruleForm.area[1],
+          cityname: 'xxx',
+          shdwcode: this.Auditlist.dwcode,
+          shdwname: this.Auditlist.dwcnname,
+          construct_dwname: this.ruleForm.construction,
+          construct_address: this.ruleForm.constructionArea,
+          pro_lxr: this.ruleForm.person,
+          pro_tel: this.ruleForm.personTel,
+          price_starttime: this.ruleForm.start,
+          price_endtime: this.ruleForm.end,
+          reason: this.ruleForm.desc,
+          isend: '',
+          isinvoice: '',
+          name: this.ruleForm.name,
+          shbj: '1',
+          adduserid: '',
+          addusername: '',
+          adddwcode: '',
+          adddwname: '',
+          shyj: '',
+          scbj: '',
+          addtime: '',
+          sfzhongbiao: '',
+          isptsyf: '',
+          fileguid: '31bcdfb8-13f0-4344-9c6d-13e71146332c',
         }
-      })
+        const res = await request.post('/demandresponse/demander/demand/edit.json', qs.stringify(params))
+        console.log(res)
+        this.$router.push('/projectapplication')
+        return this.$message.success('添加成功')
+      } catch (error) {
+        console.log(error, '系统错误')
+      }
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
     },
+
+    //获取城市列表
+    async getCityList() {
+      try {
+        const res = await request.get('/demandresponse/sys/general/citylist.json')
+        this.cityList = res.data.tdata
+        console.log(this.cityList)
+      } catch (error) {
+        console.log(error, '系统接口错误')
+      }
+    },
+
+    //获取审核单位
+    async getCityCode(val){
+      
+      try {
+        
+        const res = await request.get('/demandresponse/demander/demand/getshdw.json', {
+        params: {
+          citycode:this.ruleForm.area[1],
+        } 
+      })
+        let b = this.cityList.filter(function(item){
+          return item.cityname == val
+        })
+        console.log(b);
+        this.
+        
+      this.Auditlist = res.data.tdata
+
+
+      } catch (error) {
+         console.log(error, '系统接口错误!!!')
+      }
+  },
+
+
+  //过滤器
+  async getType(val){
+ 
+    let a = this.type.filter(function(item){
+        return item.typename == val
+    })
+    this.ruleForm.type2 = a.type
+  }
+
+  },
+
+  
+
+
+  created() {
+    this.getCityList()
+    this.getCityCode()
   },
 }
 </script>
 
 <style lang="less" scoped>
-.el-row {
-  margin: 30px auto;
-  width: 70%;
-  &:last-child {
-    margin-bottom: 0;
-  }
+.main {
+  position: relative;
+  top: 20px;
+  display: flex;
+  justify-content: center;
 }
-.el-col {
-  height: 40px;
+.el-form {
+  width: 65%;
+  border-top: 1px solid gray;
+  border-left: 1px solid gray;
+}
+.el-form-item {
+  height: 41.5px;
+  margin: 0px;
+  padding: 5px;
+  border-bottom: 1px solid gray;
+  border-right: 1px solid gray;
 }
 
-.bg-purple {
-  height: 40px;
-  background: #d3dce6;
-  .el-input {
-    height: 40px;
-  }
+.textarea {
+  height: 55px;
 }
-.bg-purple-light {
-  background: #e5e9f2;
-}
-.grid-content {
+.btn {
+  height: 55px;
   display: flex;
-  height: 40px;
-  border: 1px solid gray;
+  position: relative;
   align-items: center;
   justify-content: center;
-  .el-input {
-    width: 98%;
-    top: 3px;
-  }
-  .el-input-number {
-    width: 81%;
-  }
-  .el-select {
-    width: 98%;
-  }
+}
+.title {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  background: #86b9ec;
 }
 </style>
