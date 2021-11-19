@@ -1,8 +1,9 @@
 <template>
   <header>
     <div class="left_content">
-      <el-button plain icon="el-icon-menu" size="mini" @click="changeMenu"></el-button>
-      <el-button plain icon="el-icon-arrow-left" size="mini" @click="goBack"></el-button>
+      <el-button type="primary" circle plain icon="el-icon-menu" size="mini" @click="changeMenu"></el-button>
+      <el-button circle plain icon="el-icon-arrow-left" size="mini" @click="goBack"></el-button>
+      <!-- <el-page-header @back="goBack" content="详情页面"> </el-page-header> -->
     </div>
     <div class="right_content">
       <el-dropdown>

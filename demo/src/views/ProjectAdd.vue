@@ -13,7 +13,7 @@
       <div>
         <el-form-item label="送审类别" prop="type" label-width="150px">
           <el-radio-group v-model="ruleForm.type" @change="getType">
-            <el-radio :label="item.typename" :value='item.type' v-for ="item in type" :key="item.type" ></el-radio>
+            <el-radio :label="item.typename" :value="item.type" v-for="item in type" :key="item.type"></el-radio>
           </el-radio-group>
         </el-form-item>
       </div>
@@ -35,14 +35,14 @@
         <el-col :span="12">
           <div>
             <el-form-item label="所属区域" prop="area" label-width="150px">
-              <el-cascader  :options="cityList" v-model="ruleForm.area" :props="{value:'citycode',label: 'cityname'}"  @change="getCityCode"></el-cascader>
+              <el-cascader :options="cityList" v-model="ruleForm.area" :props="{ value: 'citycode', label: 'cityname' }" @change="getCityCode"></el-cascader>
             </el-form-item>
           </div>
         </el-col>
         <el-col :span="12">
           <div>
             <el-form-item label="审核单位" prop="check" label-width="150px">
-             {{this.Auditlist.dwcnname}}
+              {{ this.Auditlist.dwcnname }}
             </el-form-item>
           </div>
         </el-col>
@@ -64,7 +64,6 @@
         </el-col>
       </el-row>
       <el-row>
- 
         <el-col :span="12">
           <div>
             <el-form-item label="项目联系人" prop="person" label-width="150px">
@@ -75,7 +74,7 @@
         <el-col :span="12">
           <div>
             <el-form-item label="联系人手机号码" prop="personTel" label-width="150px">
-              <el-input v-model="ruleForm.personTel" size="small"> </el-input>
+              <el-input v-model="ruleForm.personTel" size="small" maxlength="11"> </el-input>
             </el-form-item>
           </div>
         </el-col>
@@ -125,11 +124,11 @@ export default {
       ruleForm: {
         name: '',
         type: '',
-        type2:'',
+        type2: '',
         money: '',
         year: '',
         area: '',
-        check:'',
+        check: '',
         construction: '',
         constructionArea: '',
         person: '',
@@ -137,29 +136,39 @@ export default {
         start: '',
         end: '',
         desc: '',
-       
-       //所属区域名字
-        cityname:''
+
+        //所属区域名字
+        cityname: '',
       },
-       
+
       //城市列表数据
       cityList: [],
       type: [
-        {type: '01', typename:'概算'},
-        {type: '02', typename:'预算'},
-        {type: '03', typename:'标底'},
-        {type: '04', typename:'结算'},
-        {type: '05', typename:'决算'},
-        {type: '06', typename:'变更'},
-        {type: '07', typename:'其他'},
-        ],
+        { type: '01', typename: '概算' },
+        { type: '02', typename: '预算' },
+        { type: '03', typename: '标底' },
+        { type: '04', typename: '结算' },
+        { type: '05', typename: '决算' },
+        { type: '06', typename: '变更' },
+        { type: '07', typename: '其他' },
+      ],
 
-        //审核单位
-        Auditlist:{},
+      //审核单位
+      Auditlist: {},
 
       rules: {
         name: [{ required: true, message: '请输入项目名称', trigger: 'blur' }],
-        desc: [{ required: true, message: '报价需提交资料说明', trigger: 'blur' }],
+        desc: [{ required: true, message: '请输入报价资料说明', trigger: 'blur' }],
+        type: [{ required: true, message: '请选择送审类别', trigger: 'change' }],
+        year: [{ type: 'date', required: true, message: '请选择年份', trigger: 'change' }],
+        area: [{ required: true, message: '请选择活动区域', trigger: 'change' }],
+        construction: [{ required: true, message: '请输入建设单位', trigger: 'blur' }],
+        constructionArea: [{ required: true, message: '请输入建设单位地址', trigger: 'blur' }],
+        person: [{ required: true, message: '请输入项目联系人', trigger: 'blur' }],
+        personTel: [
+          { required: true, message: '请输入联系人手机号码', trigger: 'blur' },
+          { pattern: /^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/, message: '请输入合法手机号/电话号', trigger: 'blur' },
+        ],
       },
     }
   },
@@ -224,43 +233,33 @@ export default {
     },
 
     //获取审核单位
-    async getCityCode(val){
-      
+    async getCityCode(val) {
       try {
-        
         const res = await request.get('/demandresponse/demander/demand/getshdw.json', {
-        params: {
-          citycode:this.ruleForm.area[1],
-        } 
-      })
-        let b = this.cityList.filter(function(item){
+          params: {
+            citycode: this.ruleForm.area[1],
+          },
+        })
+        let b = this.cityList.filter(function (item) {
           return item.cityname == val
         })
-        console.log(b);
+        console.log(b)
         this.cityname = b.cityname
-        
-      this.Auditlist = res.data.tdata
 
-
+        this.Auditlist = res.data.tdata
       } catch (error) {
-         console.log(error, '系统接口错误!!!')
+        console.log(error, '系统接口错误!!!')
       }
-  },
+    },
 
-
-  //过滤器
-  async getType(val){
- 
-    let a = this.type.filter(function(item){
+    //过滤器
+    async getType(val) {
+      let a = this.type.filter(function (item) {
         return item.typename == val
-    })
-    this.ruleForm.type2 = a.type
-  }
-
+      })
+      this.ruleForm.type2 = a.type
+    },
   },
-
-  
-
 
   created() {
     this.getCityList()

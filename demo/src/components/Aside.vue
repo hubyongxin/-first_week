@@ -14,7 +14,7 @@
       <!-- 财评中心 -->
       <el-submenu index="2">
         <template slot="title">
-          <i class="el-icon-location"></i>
+          <i class="el-icon-cpu"></i>
           <span>财评中心</span>
         </template>
         <el-menu-item-group>
@@ -27,7 +27,7 @@
       <!-- 中介机构 -->
       <el-submenu index="3">
         <template slot="title">
-          <i class="el-icon-location"></i>
+          <i class="el-icon-s-custom"></i>
           <span>中介机构</span>
         </template>
         <el-menu-item-group>

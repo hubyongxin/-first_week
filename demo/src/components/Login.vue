@@ -42,12 +42,12 @@ export default {
       loginFormRules: {
         //验证用户名
         username: [
-          { required: true, message: '财政评审平台用户名', trigger: 'blur' },
+          { required: true, message: '请输入财政评审平台用户名', trigger: 'blur' },
           { min: 3, max: 11, message: '长度在3到11个字符', trigger: 'blur' },
         ],
         //验证密码
         password: [
-          { required: true, message: '财政评审平台用户密码', trigger: 'blur' },
+          { required: true, message: '请输入财政评审平台用户密码', trigger: 'blur' },
           { min: 3, max: 15, message: '长度在3到15个字符', trigger: 'blur' },
         ],
       },
@@ -61,25 +61,31 @@ export default {
 
     //登录
     async login() {
-      try {
-        let params = {
-          username: this.loginForm.username,
-          pwd: this.loginForm.password,
-        }
-        const res = await request.post('/web/login', qs.stringify(params))
-        this.msg = res.data.msg
-        if (res.data.code == 'v') {
-          this.$router.push('/main')
-          this.$message({
-            message: this.msg,
-            type: 'success',
-          })
+      this.$refs.loginFormRef.validate(async (valid) => {
+        if (valid) {
+          try {
+            let params = {
+              username: this.loginForm.username,
+              pwd: this.loginForm.password,
+            }
+            const res = await request.post('/web/login', qs.stringify(params))
+            this.msg = res.data.msg
+            if (res.data.code == 'v') {
+              this.$router.push('/main')
+              this.$message({
+                message: this.msg,
+                type: 'success',
+              })
+            } else {
+              this.$message.error('用户名或密码错误')
+            }
+          } catch (error) {
+            this.$message.error('系统错误，请稍后重试')
+          }
         } else {
-          this.$message.error('用户名或密码错误')
+          this.$message.error('系统错误，请稍后重试~~')
         }
-      } catch (error) {
-        this.$message.error('系统错误，请稍后重试')
-      }
+      })
     },
   },
 }
