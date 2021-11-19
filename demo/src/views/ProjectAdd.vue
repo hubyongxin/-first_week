@@ -175,7 +175,7 @@ export default {
           amount: this.ruleForm.money,
           review_year: this.ruleForm.year,
           citycode: this.ruleForm.area[1],
-          cityname: 'xxx',
+          cityname: this.ruleForm.cityname,
           shdwcode: this.Auditlist.dwcode,
           shdwname: this.Auditlist.dwcnname,
           construct_dwname: this.ruleForm.construction,
@@ -237,7 +237,7 @@ export default {
           return item.cityname == val
         })
         console.log(b);
-        this.
+        this.cityname = b.cityname
         
       this.Auditlist = res.data.tdata
 
