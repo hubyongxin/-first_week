@@ -35,7 +35,7 @@
         <el-col :span="12">
           <div>
             <el-form-item label="所属区域" prop="area" label-width="150px">
-              <el-cascader :options="cityList" v-model="ruleForm.area" :props="{ value: 'citycode', label: 'cityname' }" @change="getCityCode"></el-cascader>
+              <el-cascader :options="cityList" v-model="ruleForm.area" :props="{ value: 'citycode', label: 'cityname' }" @change="getCityCode" ref='cascader'></el-cascader>
             </el-form-item>
           </div>
         </el-col>
@@ -136,7 +136,6 @@ export default {
         start: '',
         end: '',
         desc: '',
-
         //所属区域名字
         cityname: '',
       },
@@ -160,7 +159,7 @@ export default {
         name: [{ required: true, message: '请输入项目名称', trigger: 'blur' }],
         desc: [{ required: true, message: '请输入报价资料说明', trigger: 'blur' }],
         type: [{ required: true, message: '请选择送审类别', trigger: 'change' }],
-        year: [{ type: 'date', required: true, message: '请选择年份', trigger: 'change' }],
+        // year: [{ type: 'date', required: true, message: '请选择年份', trigger: 'change' }],
         area: [{ required: true, message: '请选择活动区域', trigger: 'change' }],
         construction: [{ required: true, message: '请输入建设单位', trigger: 'blur' }],
         constructionArea: [{ required: true, message: '请输入建设单位地址', trigger: 'blur' }],
@@ -173,9 +172,14 @@ export default {
     }
   },
   methods: {
+
+
     //添加
     async submitForm() {
-      try {
+
+       this.$refs.ruleForm.validate(async (valid) =>{
+         if(valid){
+     try {
         let params = {
           rowguid: '',
           proguid: '',
@@ -216,6 +220,12 @@ export default {
       } catch (error) {
         console.log(error, '系统错误')
       }
+         }
+
+       })
+
+
+
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
@@ -233,26 +243,29 @@ export default {
     },
 
     //获取审核单位
-    async getCityCode(val) {
+    async getCityCode() {
       try {
+        // this.getcityname()
         const res = await request.get('/demandresponse/demander/demand/getshdw.json', {
           params: {
             citycode: this.ruleForm.area[1],
           },
         })
-        let b = this.cityList.filter(function (item) {
-          return item.cityname == val
-        })
-        console.log(b)
-        this.cityname = b.cityname
 
+      //获取cityname
+       let b = this.$refs.cascader.getCheckedNodes()
+       this.ruleForm.cityname = b[0].parent.label +"-"+ b[0].label
+      console.log(this.ruleForm.cityname);
+     
+        
         this.Auditlist = res.data.tdata
+        // console.log(this.Auditlist);
       } catch (error) {
         console.log(error, '系统接口错误!!!')
       }
     },
 
-    //过滤器
+    //过滤送审类别
     async getType(val) {
       let a = this.type.filter(function (item) {
         return item.typename == val
@@ -260,6 +273,8 @@ export default {
       this.ruleForm.type2 = a.type
     },
   },
+
+  
 
   created() {
     this.getCityList()

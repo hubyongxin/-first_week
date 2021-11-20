@@ -82,9 +82,7 @@ export default {
           } catch (error) {
             this.$message.error('系统错误，请稍后重试')
           }
-        } else {
-          this.$message.error('系统错误，请稍后重试~~')
-        }
+        } 
       })
     },
   },

@@ -79,7 +79,7 @@
 
     <!--  编辑区域 -->
     <el-dialog title="项目信息编辑" :visible.sync="editDialogVisible" @close="editDialogClosed">
-      <el-form :model="ruleForm" ref="editFormRef" :rules="rules">
+      <el-form :model="ruleForm" ref="editFormRef" >
         <!-- 活动名称 -->
         <div>
           <el-form-item label="项目名称" prop="name" label-width="150px">
@@ -88,17 +88,11 @@
         </div>
 
         <div>
-          <el-form-item label="送审类别" prop="type" label-width="150px">
-            <el-radio-group v-model="ruleForm.type">
-              <el-radio label="01">概算</el-radio>
-              <el-radio label="02">预算</el-radio>
-              <el-radio label="03">标底</el-radio>
-              <el-radio label="04">结算</el-radio>
-              <el-radio label="05">决算</el-radio>
-              <el-radio label="06">变更</el-radio>
-              <el-radio label="07">其他</el-radio>
-            </el-radio-group>
-          </el-form-item>
+           <el-form-item label="送审类别" prop="type" label-width="150px">
+          <el-radio-group v-model="ruleForm.typename" @change="getType">
+            <el-radio :label="item.typename" :value="item.type" v-for="item in type" :key="item.type"></el-radio>
+          </el-radio-group>
+        </el-form-item>
         </div>
         <el-row>
           <el-col :span="12">
@@ -118,14 +112,14 @@
           <el-col :span="12">
             <div>
               <el-form-item label="所属区域" prop="area" label-width="150px">
-                <el-cascader :options="this.cityList" v-model="ruleForm.cityname" :props="{ value: 'citycode', label: 'cityname' }"></el-cascader>
+                <el-cascader :options="this.cityList" v-model="ruleForm.cityname" ref='cascader' :props="{ value: 'citycode', label: 'cityname' }" clearable @change="getCityCode"></el-cascader>
               </el-form-item>
             </div>
           </el-col>
           <el-col :span="12">
             <div>
               <el-form-item label="审核单位" prop="check" label-width="150px">
-                <el-input v-model="ruleForm.check" size="small"> </el-input>
+                {{ this.Auditlist.dwcnname }}
               </el-form-item>
             </div>
           </el-col>
@@ -212,6 +206,16 @@ export default {
         { name: '变更', value: '06' },
         { name: '其他', value: '07' },
       ],
+
+        type: [
+        { type: '01', typename: '概算' },
+        { type: '02', typename: '预算' },
+        { type: '03', typename: '标底' },
+        { type: '04', typename: '结算' },
+        { type: '05', typename: '决算' },
+        { type: '06', typename: '变更' },
+        { type: '07', typename: '其他' },
+      ],
       //列表数据
       tableData: [],
       //分页总条数
@@ -222,24 +226,28 @@ export default {
       currentPage: 1,
       //项目详情
       projectDetail: [],
+      //城市列表
       cityList: [],
+
+      //审核单位
+      Auditlist: {},
 
       editDialogVisible: false,
       ruleForm: {},
-      rules: {
-        name: [{ required: true, message: '请输入项目名称', trigger: 'blur' }],
-        desc: [{ required: true, message: '请输入报价资料说明', trigger: 'blur' }],
-        type: [{ required: true, message: '请选择送审类别', trigger: 'change' }],
-        year: [{ type: 'date', required: true, message: '请选择年份', trigger: 'change' }],
-        area: [{ required: true, message: '请选择活动区域', trigger: 'change' }],
-        construction: [{ required: true, message: '请输入建设单位', trigger: 'blur' }],
-        constructionArea: [{ required: true, message: '请输入建设单位地址', trigger: 'blur' }],
-        person: [{ required: true, message: '请输入项目联系人', trigger: 'blur' }],
-        personTel: [
-          { required: true, message: '请输入联系人手机号码', trigger: 'blur' },
-          { pattern: /^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/, message: '请输入合法手机号/电话号', trigger: 'blur' },
-        ],
-      },
+      // rules: {
+      //   name: [{ required: true, message: '请输入项目名称', trigger: 'blur' }],
+      //   desc: [{ required: true, message: '请输入报价资料说明', trigger: 'blur' }],
+      //   type: [{ required: true, message: '请选择送审类别', trigger: 'change' }],
+      //   // year: [{ type: 'date', required: true, message: '请选择年份', trigger: 'change' }],
+      //   area: [{ required: true, message: '请选择活动区域', trigger: 'change' }],
+      //   construction: [{ required: true, message: '请输入建设单位', trigger: 'blur' }],
+      //   constructionArea: [{ required: true, message: '请输入建设单位地址', trigger: 'blur' }],
+      //   person: [{ required: true, message: '请输入项目联系人', trigger: 'blur' }],
+      //   personTel: [
+      //     { required: true, message: '请输入联系人手机号码', trigger: 'blur' },
+      //     { pattern: /^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/, message: '请输入合法手机号/电话号', trigger: 'blur' },
+      //   ],
+      // },
     }
   },
   methods: {
@@ -372,7 +380,7 @@ export default {
       this.$router.push('/projectadd')
     },
 
-    //编辑
+    //获取编辑内容
     async showEditDialog(proguid) {
       const res = await request.get('/demandresponse/demander/demand/detail.json', {
         params: {
@@ -382,6 +390,41 @@ export default {
       this.ruleForm = res.data.tdata
       this.editDialogVisible = true
     },
+     //过滤送审类别
+     async getType(val) {
+      let a = this.type.filter(function (item) {
+        return item.typename == val
+      })
+      this.ruleForm.type = a.type
+      console.log(a);
+    },
+
+       //获取城市列表
+    async getCityList() {
+      try {
+        const res = await request.get('/demandresponse/sys/general/citylist.json')
+        this.cityList = res.data.tdata
+        console.log(this.cityList)
+      } catch (error) {
+        console.log(error, '系统接口错误')
+      }
+    },
+     //获取审核单位
+    async getCityCode() {
+      try {
+        const res = await request.get('/demandresponse/demander/demand/getshdw.json', {
+          params: {
+            citycode: this.ruleForm.citycode,
+          },
+        }) 
+        this.Auditlist = res.data.tdata
+        console.log(this.Auditlist);
+        
+      } catch (error) {
+        console.log(error, '系统接口错误!!!')
+      }
+    },
+    //编辑
     editProject() {
       this.$refs.editFormRef.validate(async (valid) => {
         let params = this.ruleForm
@@ -406,6 +449,8 @@ export default {
   },
   created() {
     this.getList()
+    this.getCityList()
+    this.getCityCode()
   },
 }
 </script>
