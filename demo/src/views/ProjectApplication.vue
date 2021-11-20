@@ -414,7 +414,7 @@ export default {
       try {
         const res = await request.get('/demandresponse/demander/demand/getshdw.json', {
           params: {
-            citycode: this.ruleForm.citycode,
+            citycode: this.ruleForm.cityname[1],
           },
         }) 
         this.Auditlist = res.data.tdata
