@@ -8,8 +8,11 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
 import '../src/assets/gaobal.css'
+//可以动态修改浏览器标题的插件
+import VueWechatTitle from 'vue-wechat-title'
 //注册使用ElementUI
 Vue.use(ElementUI)
+Vue.use(VueWechatTitle)
 
 Vue.config.productionTip = false
 

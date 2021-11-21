@@ -11,7 +11,10 @@ import ProjectDetail from '../views/ProjectDetail.vue'
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', component: Login },
+  {
+    path: '/',
+    component: Login,
+  },
   {
     path: '/main',
     component: Main,
