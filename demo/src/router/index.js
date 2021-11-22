@@ -7,6 +7,8 @@ import ProjectApplication from '../views/ProjectApplication.vue'
 import ProjectAdd from '../views/ProjectAdd.vue'
 import ProjectAudit from '../views/ProjectAudit.vue'
 import ProjectDetail from '../views/ProjectDetail.vue'
+import ProjectEdit from '../views/ProjectEdit.vue'
+
 
 Vue.use(VueRouter)
 
@@ -24,6 +26,7 @@ const routes = [
       { path: '/projectadd', component: ProjectAdd },
       { path: '/projectaudit', component: ProjectAudit },
       { path: '/projectdetail/:proguid', component: ProjectDetail },
+      { path: '/projectedit/:proguid', component: ProjectEdit },
     ],
   },
 ]

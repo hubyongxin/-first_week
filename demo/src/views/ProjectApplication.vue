@@ -63,6 +63,7 @@
             <el-table-column fixed="right" label="操作">
               <template slot-scope="scope">
                 <el-button type="text" size="small" @click="getDetail(scope.row.proguid)">详情</el-button>
+                <el-button type="text" size="small" @click="getEdit(scope.row.proguid)">编辑</el-button>
                 <el-button type="text" size="small" @click="showEditDialog(scope.row.proguid)">编辑</el-button>
                 <el-button type="text" size="small" @click="removeProjectById(scope.row.proguid)">删除</el-button>
                 <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small" v-if="scope.row.isend == '待审核'">查看结果</el-button>
@@ -325,6 +326,15 @@ export default {
     async getDetail(proguid) {
       try {
         this.$router.push({ path: `/projectdetail/${proguid}` })
+      } catch (error) {
+        console.log(error, '系统接口异常，请稍后重试')
+      }
+    },
+
+       //编辑
+    async getEdit(proguid) {
+      try {
+        this.$router.push({ path: `/projectedit/${proguid}` })
       } catch (error) {
         console.log(error, '系统接口异常，请稍后重试')
       }

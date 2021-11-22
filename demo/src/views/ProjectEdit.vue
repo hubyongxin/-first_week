@@ -186,7 +186,21 @@ export default {
             proguid,
           },
         })
-        this.detailList = res.data.tdata
+        this.ruleForm.name = res.data.tdata.name
+        this.ruleForm.type = res.data.tdata.typename
+        this.ruleForm.money = res.data.tdata.amount
+        this.ruleForm.year = res.data.tdata.review_year
+        this.ruleForm.area = res.data.tdata.citycode
+        this.ruleForm.construction = res.data.tdata.construct_dwname
+        this.ruleForm.constructionArea = res.data.tdata.construct_address
+        this.ruleForm.person = res.data.tdata.pro_lxr
+        this.ruleForm.personTel = res.data.tdata.pro_tel
+        this.ruleForm.start = res.data.tdata.price_starttime
+        this.ruleForm.end = res.data.tdata.price_endtime
+        this.ruleForm.desc = res.data.tdata.reason
+        
+
+
         console.log(this.detailList)
       } catch (error) {
         console.log(error, '系统接口错误')
