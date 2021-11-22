@@ -64,7 +64,7 @@
               <template slot-scope="scope">
                 <el-button type="text" size="small" @click="getDetail(scope.row.proguid)">详情</el-button>
                 <el-button type="text" size="small" @click="getEdit(scope.row.proguid)">编辑</el-button>
-                <el-button type="text" size="small" @click="showEditDialog(scope.row.proguid)">编辑</el-button>
+                <!-- <el-button type="text" size="small" @click="showEditDialog(scope.row.proguid)">编辑</el-button> -->
                 <el-button type="text" size="small" @click="removeProjectById(scope.row.proguid)">删除</el-button>
                 <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small" v-if="scope.row.isend == '待审核'">查看结果</el-button>
               </template>

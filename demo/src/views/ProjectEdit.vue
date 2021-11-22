@@ -139,6 +139,7 @@ export default {
         //所属区域名字
         cityname: '',
       },
+      list:{},
 
       //城市列表数据
       cityList: [],
@@ -186,6 +187,8 @@ export default {
             proguid,
           },
         })
+     
+        this.list =res.data.tdata
         this.ruleForm.name = res.data.tdata.name
         this.ruleForm.type = res.data.tdata.typename
         this.ruleForm.money = res.data.tdata.amount
@@ -199,22 +202,23 @@ export default {
         this.ruleForm.end = res.data.tdata.price_endtime
         this.ruleForm.desc = res.data.tdata.reason
         
+        
 
 
-        console.log(this.detailList)
+        console.log(this.list)
       } catch (error) {
         console.log(error, '系统接口错误')
       }
     },
 
     //编辑
-    async submitForm() {
+    async submitForm(proguid) {
       this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
           try {
             let params = {
-              rowguid: '',
-              proguid: '',
+              rowguid: this.list.rowguid,
+              proguid: this.proguid,
               type: this.ruleForm.type2,
               typename: this.ruleForm.type,
               amount: this.ruleForm.money,
@@ -230,21 +234,24 @@ export default {
               price_starttime: this.ruleForm.start,
               price_endtime: this.ruleForm.end,
               reason: this.ruleForm.desc,
-              isend: '',
-              isinvoice: '',
+              isend: this.list.isend,
+              isinvoice: this.list.isinvoice,
               name: this.ruleForm.name,
-              shbj: '1',
-              adduserid: '',
-              addusername: '',
-              adddwcode: '',
-              adddwname: '',
-              shyj: '',
-              scbj: '',
-              addtime: '',
-              sfzhongbiao: '',
-              isptsyf: '',
+              shbj: this.list.shbj,
+              adduserid: this.list.adduserid,
+              addusername:this.list.addusername,
+              adddwcode: this.list.adddwcode,
+              adddwname: this.list.adddwname,
+              shyj: this.list.shyj,
+              scbj: this.list.scbj,
+              addtime: this.list.addtime,
+              sfzhongbiao: this.list.sfzhongbiao,
+              isptsyf: this.list.isptsyf,
               fileguid: '31bcdfb8-13f0-4344-9c6d-13e71146332c',
+              
             }
+            // let params = this.list
+        
             const res = await request.post('/demandresponse/demander/demand/edit.json', qs.stringify(params))
             console.log(res)
             this.$router.push('/projectapplication')
@@ -302,7 +309,7 @@ export default {
   },
 
   created() {
-    this.getid()
+    this.getid(this.proguid)
     this.getdel(this.proguid)
     this.getCityList()
     this.getCityCode()
