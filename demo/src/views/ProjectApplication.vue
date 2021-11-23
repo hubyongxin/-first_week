@@ -26,7 +26,7 @@
             <el-table-column fixed prop="name ,proguid" label="项目信息" width="204">
               <template slot-scope="scope">
                 <div>
-                  <el-button type="text">{{ scope.row.name }}</el-button>
+                  <el-button type="text" @click="getDetail(scope.row.proguid)">{{ scope.row.name }}</el-button>
                 </div>
                 <div>{{ scope.row.proguid }}</div>
               </template>
