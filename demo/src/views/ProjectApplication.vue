@@ -10,13 +10,14 @@
               <el-radio-button label="0">未截止报名</el-radio-button>
               <el-radio-button label="1">已截止报名</el-radio-button>
             </el-radio-group>
-            <el-select v-model="form.typeval" placeholder="类别" size="small">
+            <el-select v-model="form.typeval" clearable placeholder="类别" size="small">
               <el-option :label="item.name" :value="item.value" v-for="item in typeList" :key="item.value"></el-option>
             </el-select>
-            <el-input v-model="form.name" placeholder="项目名称" size="small"></el-input>
+            <el-input v-model="form.name" clearable placeholder="项目名称" size="small"></el-input>
             <span>
               <el-button type="primary" icon="el-icon-search" size="small" @click="select">查询</el-button>
               <el-button type="success" size="small" @click="goAdd"><i class="el-icon-plus el-icon--left"></i>添加</el-button>
+              <el-button type="info" size="small" icon="el-icon-refresh" @click='goRefresh'>刷新</el-button>
             </span>
           </el-form>
         </div>
@@ -48,15 +49,16 @@
             </el-table-column>
             <el-table-column prop="shbj" label="审核状态" width="119">
               <template slot-scope="scope">
-                <el-tag type="primary" v-if="scope.row.shbj == '审核中'">{{ scope.row.shbj }}</el-tag>
-                <el-tag type="success" v-if="scope.row.shbj == '通过'">{{ scope.row.shbj }}</el-tag>
-                <el-tag type="info" v-if="scope.row.shbj == '仅暂存'">{{ scope.row.shbj }}</el-tag>
+                <el-tag type="primary" size="small" v-if="scope.row.shbj == '审核中'">{{ scope.row.shbj }}</el-tag>
+                <el-tag type="success" size="small" v-if="scope.row.shbj == '通过'">{{ scope.row.shbj }}</el-tag>
+                <el-tag type="info" size="small" v-if="scope.row.shbj == '仅暂存'">{{ scope.row.shbj }}</el-tag>
+                 <el-tag type="info" size="small" v-if="scope.row.shbj == '待审核'">{{ scope.row.shbj }}</el-tag>
               </template>
             </el-table-column>
             <el-table-column label="评审状态" prop="isend" width="119">
               <template slot-scope="scope">
-                <el-tag type="warning" v-if="scope.row.isend == '未评定'">{{ scope.row.isend }}</el-tag>
-                <el-tag type="success" v-if="scope.row.isend == '已评定'">{{ scope.row.isend }}</el-tag>
+                <el-tag type="warning" size="small" v-if="scope.row.isend == '未评定'">{{ scope.row.isend }}</el-tag>
+                <el-tag type="success" size="small" v-if="scope.row.isend == '已评定'">{{ scope.row.isend }}</el-tag>
               </template>
             </el-table-column>
 
@@ -390,6 +392,10 @@ export default {
       this.$router.push('/projectadd')
     },
 
+    //刷新
+    goRefresh(){
+      this.$router.go(0)
+    },
     //获取编辑内容
     async showEditDialog(proguid) {
       const res = await request.get('/demandresponse/demander/demand/detail.json', {

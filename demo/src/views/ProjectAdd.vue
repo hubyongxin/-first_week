@@ -265,8 +265,8 @@ export default {
       }
     },
 
-    //过滤送审类别
-    async getType(val) {
+    //过滤送审类别 
+      getType(val) {
       let a = this.type.filter(function (item) {
         return item.typename == val
       })

@@ -14,7 +14,7 @@
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>进入网站</el-dropdown-item>
           <el-dropdown-item>修改密码</el-dropdown-item>
-          <el-dropdown-item @click="backOut"> 退出登录</el-dropdown-item>
+          <el-dropdown-item @click.native="backOut"> 退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -37,6 +37,7 @@ export default {
     },
     backOut() {
       this.$router.push('/')
+      console.log(111);
     },
   },
 }
