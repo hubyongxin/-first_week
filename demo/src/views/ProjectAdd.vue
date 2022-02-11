@@ -166,7 +166,7 @@ export default {
         person: [{ required: true, message: '请输入项目联系人', trigger: 'blur' }],
         personTel: [
           { required: true, message: '请输入联系人手机号码', trigger: 'blur' },
-          { pattern: /^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/, message: '请输入合法手机号/电话号', trigger: 'blur' },
+          { pattern: /^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/, message: '请输入合法手机号/电话号', trigger: 'change' },
         ],
       },
     }
