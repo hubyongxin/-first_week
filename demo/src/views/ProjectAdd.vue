@@ -218,7 +218,7 @@ export default {
         this.$router.push('/projectapplication')
         return this.$message.success('添加成功')
       } catch (error) {
-        console.log(error, '系统错误')
+        console.log(error, '系统错误');
       }
          }
 
