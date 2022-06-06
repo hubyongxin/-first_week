@@ -2,14 +2,18 @@
   <div class="main">
     <!-- 表单区域 -->
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
-      <el-form-item class="title"><div>项目信息</div></el-form-item>
+      <el-form-item class="title">
+        <div>项目信息</div>
+      </el-form-item>
       <!-- 项目名称 -->
       <div>
         <el-form-item label="项目名称" prop="name" label-width="150px">
           <el-input v-model="ruleForm.name" size="small"></el-input>
         </el-form-item>
       </div>
-      <el-form-item class="title"><div>详细信息</div></el-form-item>
+      <el-form-item class="title">
+        <div>详细信息</div>
+      </el-form-item>
       <div>
         <el-form-item label="送审类别" prop="type" label-width="150px">
           <el-radio-group v-model="ruleForm.type" @change="getType">
@@ -20,7 +24,9 @@
       <el-row>
         <el-col :span="12">
           <div>
-            <el-form-item label="送审金额" prop="money" label-width="150px"> <el-input-number v-model="ruleForm.money" :min="0" size="small"> </el-input-number> <span>（万元）</span> </el-form-item>
+            <el-form-item label="送审金额" prop="money" label-width="150px">
+              <el-input-number v-model="ruleForm.money" :min="0" size="small"> </el-input-number> <span>（万元）</span>
+            </el-form-item>
           </div>
         </el-col>
         <el-col :span="12">
@@ -35,7 +41,8 @@
         <el-col :span="12">
           <div>
             <el-form-item label="所属区域" prop="area" label-width="150px">
-              <el-cascader :options="cityList" v-model="ruleForm.area" :props="{ value: 'citycode', label: 'cityname' }" @change="getCityCode" ref='cascader'></el-cascader>
+              <el-cascader :options="cityList" v-model="ruleForm.area" :props="{ value: 'citycode', label: 'cityname' }" @change="getCityCode" ref='cascader'>
+              </el-cascader>
             </el-form-item>
           </div>
         </el-col>
@@ -172,60 +179,53 @@ export default {
     }
   },
   methods: {
-
-
     //添加
     async submitForm() {
-
-       this.$refs.ruleForm.validate(async (valid) =>{
-         if(valid){
-     try {
-        let params = {
-          rowguid: '',
-          proguid: '',
-          type: this.ruleForm.type2,
-          typename: this.ruleForm.type,
-          amount: this.ruleForm.money,
-          review_year: this.ruleForm.year,
-          citycode: this.ruleForm.area[1],
-          cityname: this.ruleForm.cityname,
-          shdwcode: this.Auditlist.dwcode,
-          shdwname: this.Auditlist.dwcnname,
-          construct_dwname: this.ruleForm.construction,
-          construct_address: this.ruleForm.constructionArea,
-          pro_lxr: this.ruleForm.person,
-          pro_tel: this.ruleForm.personTel,
-          price_starttime: this.ruleForm.start,
-          price_endtime: this.ruleForm.end,
-          reason: this.ruleForm.desc,
-          isend: '',
-          isinvoice: '',
-          name: this.ruleForm.name,
-          shbj: '1',
-          adduserid: '',
-          addusername: '',
-          adddwcode: '',
-          adddwname: '',
-          shyj: '',
-          scbj: '',
-          addtime: '',
-          sfzhongbiao: '',
-          isptsyf: '',
-          fileguid: '31bcdfb8-13f0-4344-9c6d-13e71146332c',
+      this.$refs.ruleForm.validate(async (valid) => {
+        if (valid) {
+          try {
+            let params = {
+              rowguid: '',
+              proguid: '',
+              type: this.ruleForm.type2,
+              typename: this.ruleForm.type,
+              amount: this.ruleForm.money,
+              review_year: this.ruleForm.year,
+              citycode: this.ruleForm.area[1],
+              cityname: this.ruleForm.cityname,
+              shdwcode: this.Auditlist.dwcode,
+              shdwname: this.Auditlist.dwcnname,
+              construct_dwname: this.ruleForm.construction,
+              construct_address: this.ruleForm.constructionArea,
+              pro_lxr: this.ruleForm.person,
+              pro_tel: this.ruleForm.personTel,
+              price_starttime: this.ruleForm.start,
+              price_endtime: this.ruleForm.end,
+              reason: this.ruleForm.desc,
+              isend: '',
+              isinvoice: '',
+              name: this.ruleForm.name,
+              shbj: '1',
+              adduserid: '',
+              addusername: '',
+              adddwcode: '',
+              adddwname: '',
+              shyj: '',
+              scbj: '',
+              addtime: '',
+              sfzhongbiao: '',
+              isptsyf: '',
+              fileguid: '31bcdfb8-13f0-4344-9c6d-13e71146332c',
+            }
+            const res = await request.post('/demandresponse/demander/demand/edit.json', qs.stringify(params))
+            console.log(res)
+            this.$router.push('/projectapplication')
+            return this.$message.success('添加成功')
+          } catch (error) {
+            console.log(error, '系统错误')
+          }
         }
-        const res = await request.post('/demandresponse/demander/demand/edit.json', qs.stringify(params))
-        console.log(res)
-        this.$router.push('/projectapplication')
-        return this.$message.success('添加成功')
-      } catch (error) {
-        console.log(error, '系统错误')
-      }
-         }
-
-       })
-
-
-
+      })
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
@@ -252,12 +252,11 @@ export default {
           },
         })
 
-      //获取cityname
-       let b = this.$refs.cascader.getCheckedNodes()
-       this.ruleForm.cityname = b[0].parent.label +"-"+ b[0].label
-      console.log(this.ruleForm.cityname);
-     
-        
+        //获取cityname
+        let b = this.$refs.cascader.getCheckedNodes()
+        this.ruleForm.cityname = b[0].parent.label + '-' + b[0].label
+        console.log(this.ruleForm.cityname)
+
         this.Auditlist = res.data.tdata
         // console.log(this.Auditlist);
       } catch (error) {
@@ -265,16 +264,14 @@ export default {
       }
     },
 
-    //过滤送审类别 
-      getType(val) {
+    //过滤送审类别
+    getType(val) {
       let a = this.type.filter(function (item) {
         return item.typename == val
       })
       this.ruleForm.type2 = a.type
     },
   },
-
-  
 
   created() {
     this.getCityList()
