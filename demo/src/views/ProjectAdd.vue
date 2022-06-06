@@ -253,14 +253,14 @@ export default {
         })
 
         //获取cityname
-        let b = this.$refs.cascader.getCheckedNodes()
-        this.ruleForm.cityname = b[0].parent.label + '-' + b[0].label
-        console.log(this.ruleForm.cityname)
+        let b = this.$refs.cascader.getCheckedNodes();
+        this.ruleForm.cityname = b[0].parent.label + '-' + b[0].label;
+        console.log(this.ruleForm.cityname);
 
-        this.Auditlist = res.data.tdata
+        this.Auditlist = res.data.tdata;
         // console.log(this.Auditlist);
       } catch (error) {
-        console.log(error, '系统接口错误!!!')
+        console.log(error, '系统接口错误!!!');
       }
     },
 

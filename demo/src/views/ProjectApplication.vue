@@ -52,7 +52,7 @@
                 <el-tag type="primary" size="small" v-if="scope.row.shbj == '审核中'">{{ scope.row.shbj }}</el-tag>
                 <el-tag type="success" size="small" v-if="scope.row.shbj == '通过'">{{ scope.row.shbj }}</el-tag>
                 <el-tag type="info" size="small" v-if="scope.row.shbj == '仅暂存'">{{ scope.row.shbj }}</el-tag>
-                 <el-tag type="info" size="small" v-if="scope.row.shbj == '待审核'">{{ scope.row.shbj }}</el-tag>
+                <el-tag type="info" size="small" v-if="scope.row.shbj == '待审核'">{{ scope.row.shbj }}</el-tag>
               </template>
             </el-table-column>
             <el-table-column label="评审状态" prop="isend" width="119">
@@ -75,14 +75,15 @@
         </div>
         <!-- 分页区域 -->
         <div class="page">
-          <el-pagination background layout=" total,prev, pager, next" :total="this.listTotal" :page-size="this.pageSize" :current-page="this.currentPage" @current-change="handleCurrentChange"> </el-pagination>
+          <el-pagination background layout=" total,prev, pager, next" :total="this.listTotal" :page-size="this.pageSize" :current-page="this.currentPage"
+            @current-change="handleCurrentChange"> </el-pagination>
         </div>
       </div>
     </div>
 
     <!--  编辑区域 -->
     <el-dialog title="项目信息编辑" :visible.sync="editDialogVisible" @close="editDialogClosed">
-      <el-form :model="ruleForm" ref="editFormRef" >
+      <el-form :model="ruleForm" ref="editFormRef">
         <!-- 活动名称 -->
         <div>
           <el-form-item label="项目名称" prop="name" label-width="150px">
@@ -91,16 +92,18 @@
         </div>
 
         <div>
-           <el-form-item label="送审类别" prop="type" label-width="150px">
-          <el-radio-group v-model="ruleForm.typename" @change="getType">
-            <el-radio :label="item.typename" :value="item.type" v-for="item in type" :key="item.type"></el-radio>
-          </el-radio-group>
-        </el-form-item>
+          <el-form-item label="送审类别" prop="type" label-width="150px">
+            <el-radio-group v-model="ruleForm.typename" @change="getType">
+              <el-radio :label="item.typename" :value="item.type" v-for="item in type" :key="item.type"></el-radio>
+            </el-radio-group>
+          </el-form-item>
         </div>
         <el-row>
           <el-col :span="12">
             <div>
-              <el-form-item label="送审金额" prop="money" label-width="150px"> <el-input-number v-model="ruleForm.amount" :min="0" size="small"> </el-input-number> <span>（万元）</span> </el-form-item>
+              <el-form-item label="送审金额" prop="money" label-width="150px">
+                <el-input-number v-model="ruleForm.amount" :min="0" size="small"> </el-input-number> <span>（万元）</span>
+              </el-form-item>
             </div>
           </el-col>
           <el-col :span="12">
@@ -115,7 +118,8 @@
           <el-col :span="12">
             <div>
               <el-form-item label="所属区域" prop="area" label-width="150px">
-                <el-cascader :options="this.cityList" v-model="ruleForm.cityname" ref='cascader' :props="{ value: 'citycode', label: 'cityname' }" clearable @change="getCityCode"></el-cascader>
+                <el-cascader :options="this.cityList" v-model="ruleForm.cityname" ref='cascader' :props="{ value: 'citycode', label: 'cityname' }" clearable
+                  @change="getCityCode"></el-cascader>
               </el-form-item>
             </div>
           </el-col>
@@ -163,14 +167,16 @@
           <el-col :span="12">
             <div>
               <el-form-item label="报价开始时间" prop="start" label-width="150px">
-                <el-date-picker v-model="ruleForm.price_starttime" type="datetime" placeholder="选择日期时间" size="small" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+                <el-date-picker v-model="ruleForm.price_starttime" type="datetime" placeholder="选择日期时间" size="small" value-format="yyyy-MM-dd HH:mm:ss">
+                </el-date-picker>
               </el-form-item>
             </div>
           </el-col>
           <el-col :span="12">
             <div>
               <el-form-item label="报价结束时间" prop="end" label-width="150px">
-                <el-date-picker v-model="ruleForm.price_endtime" type="datetime" placeholder="选择日期时间" size="small" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+                <el-date-picker v-model="ruleForm.price_endtime" type="datetime" placeholder="选择日期时间" size="small" value-format="yyyy-MM-dd HH:mm:ss">
+                </el-date-picker>
               </el-form-item>
             </div>
           </el-col>
@@ -210,7 +216,7 @@ export default {
         { name: '其他', value: '07' },
       ],
 
-        type: [
+      type: [
         { type: '01', typename: '概算' },
         { type: '02', typename: '预算' },
         { type: '03', typename: '标底' },
@@ -333,7 +339,7 @@ export default {
       }
     },
 
-       //编辑
+    //编辑
     async getEdit(proguid) {
       try {
         this.$router.push({ path: `/projectedit/${proguid}` })
@@ -393,7 +399,7 @@ export default {
     },
 
     //刷新
-    goRefresh(){
+    goRefresh() {
       this.$router.go(0)
     },
     //获取编辑内容
@@ -406,16 +412,16 @@ export default {
       this.ruleForm = res.data.tdata
       this.editDialogVisible = true
     },
-     //过滤送审类别
-     async getType(val) {
+    //过滤送审类别
+    async getType(val) {
       let a = this.type.filter(function (item) {
         return item.typename == val
       })
       this.ruleForm.type = a.type
-      console.log(a);
+      console.log(a)
     },
 
-       //获取城市列表
+    //获取城市列表
     async getCityList() {
       try {
         const res = await request.get('/demandresponse/sys/general/citylist.json')
@@ -425,17 +431,16 @@ export default {
         console.log(error, '系统接口错误')
       }
     },
-     //获取审核单位
+    //获取审核单位
     async getCityCode() {
       try {
         const res = await request.get('/demandresponse/demander/demand/getshdw.json', {
           params: {
             citycode: this.ruleForm.cityname[1],
           },
-        }) 
+        })
         this.Auditlist = res.data.tdata
-        console.log(this.Auditlist);
-        
+        console.log(this.Auditlist)
       } catch (error) {
         console.log(error, '系统接口错误!!!')
       }
