@@ -267,9 +267,9 @@ export default {
     //过滤送审类别
     getType(val) {
       let a = this.type.filter(function (item) {
-        return item.typename == val
+        return item.typename == val;
       })
-      this.ruleForm.type2 = a.type
+      this.ruleForm.type2 = a.type;
     },
   },
 
