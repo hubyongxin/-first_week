@@ -13,8 +13,12 @@
             <el-input v-model="ruleForm.name" size="small"></el-input>
           </div>
         </el-col>
-        <el-col :span="24"><div class="grid-content bg-purple-light">详细信息</div></el-col>
-        <el-col :span="4"><div class="grid-content bg-purple-light">送审类别</div></el-col>
+        <el-col :span="24">
+          <div class="grid-content bg-purple-light">详细信息</div>
+        </el-col>
+        <el-col :span="4">
+          <div class="grid-content bg-purple-light">送审类别</div>
+        </el-col>
         <el-col :span="20">
           <div class="grid-content bg-purple">
             <el-radio-group v-model="ruleForm.type">
@@ -58,21 +62,29 @@
         <el-col :span="4">
           <div class="grid-content bg-purple-light">审核单位</div>
         </el-col>
-        <el-col :span="8"><div class="grid-content bg-purple"></div></el-col>
-        <el-col :span="4"><div class="grid-content bg-purple-light">建设单位</div> </el-col>
+        <el-col :span="8">
+          <div class="grid-content bg-purple"></div>
+        </el-col>
+        <el-col :span="4">
+          <div class="grid-content bg-purple-light">建设单位</div>
+        </el-col>
         <el-col :span="8">
           <div class="grid-content bg-purple">
             <el-input v-model="ruleForm.construction" size="small"> </el-input>
           </div>
         </el-col>
-        <el-col :span="4"><div class="grid-content bg-purple-light">建设单位地址</div></el-col>
+        <el-col :span="4">
+          <div class="grid-content bg-purple-light">建设单位地址</div>
+        </el-col>
         <el-col :span="8">
           <div class="grid-content bg-purple">
             <el-input v-model="ruleForm.constructionArea" size="small"> </el-input>
           </div>
         </el-col>
         <el-col :span="4">
-          <div class="grid-content bg-purple-light"><div>项目联系人</div></div>
+          <div class="grid-content bg-purple-light">
+            <div>项目联系人</div>
+          </div>
         </el-col>
         <el-col :span="8">
           <div class="grid-content bg-purple">
@@ -113,7 +125,11 @@
         </el-col>
         <el-col :span="24">
           <div class="grid-content bg-purple">
-            <div><el-button>提交</el-button><el-button>暂存</el-button><el-button>取消</el-button></div>
+            <div>
+              <el-button>提交</el-button>
+              <el-button>暂存</el-button>
+              <el-button>取消</el-button>
+            </div>
           </div>
         </el-col>
       </el-row>
